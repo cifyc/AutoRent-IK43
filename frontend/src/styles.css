@@ -1,0 +1,15 @@
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.55 system-ui, sans-serif; color: #17202a; background: #f6f8fb; }
+.layout { max-width: 1120px; margin: 0 auto; padding: 44px 24px; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.8rem); margin: 0; letter-spacing: -0.03em; }
+header p { max-width: 680px; color: #596474; }
+.eyebrow { font-size: .76rem; letter-spacing: .15em; font-weight: 800; color: #3966a5; }
+.filter { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 28px 0; }
+.filter label { font-weight: 600; }
+.filter input { padding: 11px 14px; border: 1px solid #aab5c4; border-radius: 8px; font: inherit; min-width: 260px; background: white; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.car-card { padding: 22px; background: white; border: 1px solid #e5e8ed; border-radius: 14px; box-shadow: 0 3px 16px #2433430d; }
+.car-card h2 { margin: 8px 0; font-size: 1.25rem; }
+.car-card__category { color: #53637b; font-size: .88rem; }
+.car-card__price { font-weight: 750; font-size: 1.06rem; }
+footer { color: #637182; font-size: .87rem; margin-top: 40px; }
