@@ -77,6 +77,34 @@ class RulesTests(unittest.TestCase):
         b = datetime(2027, 3, 28, 12, tzinfo=kyiv)
         self.assertEqual(PricingPolicy().quote(Period(a, b), 100, 0).days, 1)
 
+    def test_dst_autumn_extra_hour_is_two_paid_days(self):
+        kyiv = ZoneInfo('Europe/Kyiv')
+        # Verified historic autumn transition, 25 actual hours in this interval.
+        start = datetime(2024, 10, 26, 12, tzinfo=kyiv)
+        finish = datetime(2024, 10, 27, 12, tzinfo=kyiv)
+        quote = PricingPolicy().quote(Period(start, finish), '100.00', '300.00')
+        self.assertEqual(quote.days, 2)
+        self.assertEqual(quote.total_uah, Decimal('200.00'))
+
+    def test_deposit_is_not_added_to_rental_total(self):
+        quote = PricingPolicy().quote(Period(T0, T0 + timedelta(hours=2)), '900.00', '5000.00')
+        self.assertEqual(quote.total_uah, Decimal('900.00'))
+        self.assertEqual(quote.deposit_uah, Decimal('5000.00'))
+
+    def test_cancel_active_booking_is_forbidden(self):
+        with self.assertRaises(CancellationNotAllowed):
+            ensure_client_cancel_allowed(BookingState.ACTIVE, T0, T0 - timedelta(days=3))
+
+    def test_cancelled_booking_has_no_outgoing_transition(self):
+        with self.assertRaises(InvalidStateTransition):
+            ensure_transition(BookingState.CANCELLED, BookingState.ACTIVE)
+
+    def test_overlap_handles_different_timezones(self):
+        kyiv = ZoneInfo('Europe/Kyiv')
+        utc_period = Period(datetime(2024, 1, 10, 10, tzinfo=UTC), datetime(2024, 1, 10, 11, tzinfo=UTC))
+        local_period = Period(datetime(2024, 1, 10, 12, 30, tzinfo=kyiv), datetime(2024, 1, 10, 13, 30, tzinfo=kyiv))
+        self.assertTrue(utc_period.overlaps(local_period))
+
     def test_rate_stays_decimal(self):
         q = PricingPolicy().quote(Period(T0, T0 + timedelta(hours=1)), '1234.56', '10.00')
         self.assertEqual(q.total_uah, Decimal('1234.56'))
