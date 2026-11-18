@@ -1,0 +1,3 @@
+# Windows does not ship a system IANA time zone database by default.
+# zoneinfo.ZoneInfo("Europe/Kyiv") needs tzdata on Windows.
+tzdata>=2025.1; sys_platform == "win32"
