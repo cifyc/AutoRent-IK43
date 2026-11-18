@@ -13,3 +13,8 @@ header p { max-width: 680px; color: #596474; }
 .car-card__category { color: #53637b; font-size: .88rem; }
 .car-card__price { font-weight: 750; font-size: 1.06rem; }
 footer { color: #637182; font-size: .87rem; margin-top: 40px; }
+
+.filter button { padding: 11px 14px; border: 1px solid #8da0bc; border-radius: 8px; background: white; color: #21476f; cursor: pointer; font: inherit; }
+.filter button:hover:not(:disabled) { background: #eaf0f8; }
+.filter button:disabled { cursor: not-allowed; opacity: .52; }
+.filter input:focus-visible, .filter button:focus-visible { outline: 3px solid #2e72bc; outline-offset: 2px; }
